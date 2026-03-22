@@ -45,6 +45,8 @@
 #ifdef __OpenBSD__
 #include <sys/sysctl.h>
 #include <kvm.h>
+
+#include <X11/XF86keysym.h>
 #endif /* __OpenBSD */
 
 #include "drw.h"

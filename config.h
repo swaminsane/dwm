@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -79,7 +81,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_z,      spawn,          {.v = dmenucmd } },
 //	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = tabtermcmd } },
-        { MODKEY,                       XK_f,      spawn,          {.v = surfcmd } },
+    { MODKEY|ShiftMask,                       XK_f,      spawn,          {.v = surfcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -115,13 +117,28 @@ static const Key keys[] = {
 
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
-        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
-        { 0,                             XK_F3,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%+", NULL}} },
+//        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
+//        { 0,                             XK_F3,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%+", NULL}} },
         { 0,                             XK_F4,     spawn,          {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}} },
-        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
-        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+//        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
+//        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
         { MODKEY,                        XK_F10,    spawn,          SHCMD("/home/swaminsane/.local/bin/connectmenu") },
 //        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+
+
+        // Screenshot
+        { MODKEY,     XK_p,  spawn, SHCMD("scrot ~/screenshots/%Y-%m-%d.png") },
+
+// Volume
+        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer -i 5") },
+        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer -d 5") },
+
+// Brightness
+        { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
+        { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
+
+// Browser
+        { MODKEY|ShiftMask, XK_b, spawn, SHCMD("librewolf") },
 
 };
 
