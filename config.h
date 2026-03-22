@@ -17,7 +17,7 @@ static const char dmenufont[]       = "monospace:size=12";
 #include "/home/swaminsane/.cache/wal/colors-wal-dwm.h"
 
 /* tagging */
-static const char *tags[] = { ">_", "{}", "www", "<3", "@", "*" };
+static const char *tags[] = { ">_", "www", "#", "ψ", "@", "<3" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -26,7 +26,9 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+    
 //        { "St",       NULL,       NULL,       0,            0,           -1 },
+        { "st",       NULL,       "notes",       1 << 2,            0,           -1 },
         { NULL,       NULL,       NULL,       0,            0,           -1 },
 //        { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 //        { "fzf-pop",  NULL,       NULL,       0,            1,           -1 },
