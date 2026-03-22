@@ -1,23 +1,20 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=13" };
-static const char dmenufont[]       = "monospace:size=11";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+static const char *fonts[] = {
+    "Noto Sans Mono:size=11:antialias=true:autohint=true",
+    "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"
 };
+static const char dmenufont[]       = "monospace:size=12";
+
+#include "/home/swaminsane/.cache/wal/colors-wal-dwm.h"
 
 /* tagging */
 static const char *tags[] = { ">_", "{}", "www", "<3", "@", "*" };
@@ -29,9 +26,10 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-        { "St",       NULL,       NULL,       0,            0,           -1 },
-//	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-//      { "fzf-pop",  NULL,       NULL,       0,            1,           -1 },
+//        { "St",       NULL,       NULL,       0,            0,           -1 },
+        { NULL,       NULL,       NULL,       0,            0,           -1 },
+//        { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+//        { "fzf-pop",  NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -61,9 +59,20 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 // static const char *termcmd[]    = { "st", NULL };
 static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
+
+// static const char *surfcmd[] = { "surf", "https://startpage.com", NULL };
+
+static const char *surfcmd[] = {
+    "sh", "-c",
+    "wid=$(tabbed -d); "
+    "surf -e $wid https://startpage.com & "
+    "surf -e $wid https://invidious.nerdvpn.de &",
+    NULL
+};
+
 // static const char *fzfcmd[]      = { "st", "-c", "fzf-pop", "-g", "1886x1046+17+17", "-e", "fzfsearch", NULL };
 static const char *fzfcmd[]      = { "/home/swaminsane/.local/bin/fzfsearch", NULL };
 
@@ -72,6 +81,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_z,      spawn,          {.v = dmenucmd } },
 //	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = tabtermcmd } },
+    { MODKEY|ShiftMask,                       XK_f,      spawn,          {.v = surfcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -102,15 +112,33 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
         { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
         { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
+        { MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("/usr/local/bin/slock") },
 
 
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
-        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
-        { 0,                             XK_F3,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%+", NULL}} },
+//        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
+//        { 0,                             XK_F3,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%+", NULL}} },
         { 0,                             XK_F4,     spawn,          {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}} },
-        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
-        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+//        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
+//        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+        { MODKEY,                        XK_F10,    spawn,          SHCMD("/home/swaminsane/.local/bin/connectmenu") },
+//        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+
+
+        // Screenshot
+        { 0,     XK_Print,  spawn, SHCMD("scrot ~/Pictures/Screenshots/%Y-%m-%d.png") },
+
+// Volume
+        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%-") },
+        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%+") },
+
+// Brightness
+        { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
+        { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
+
+// Browser
+        { MODKEY|ShiftMask, XK_b, spawn, SHCMD("librewolf") },
 
 };
 
