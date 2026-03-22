@@ -130,15 +130,15 @@ static const Key keys[] = {
         { 0,     XK_Print,  spawn, SHCMD("scrot ~/Pictures/Screenshots/%Y-%m-%d.png") },
 
 // Volume
-        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%-") },
-        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%+") },
+        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
+        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
 
 // Brightness
         { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
         { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
 
 // Browser
-        { MODKEY|ShiftMask, XK_b, spawn, SHCMD("librewolf") },
+        { MODKEY, XK_f, spawn, SHCMD("firefox") },
 
 };
 
