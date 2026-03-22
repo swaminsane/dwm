@@ -28,9 +28,9 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
     
 //        { "St",       NULL,       NULL,       0,            0,           -1 },
-        { "st",       NULL,       "notes",       1 << 2,            0,           -1 },
+        { "St",       NULL,       "notes",       1 << 2,            0,           -1 },
         { NULL,       NULL,       NULL,       0,            0,           -1 },
-//        { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+        { "firefox",  NULL,       NULL,       1 << 1,       0,           -1 },
 //        { "fzf-pop",  NULL,       NULL,       0,            1,           -1 },
 };
 
@@ -64,6 +64,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 // static const char *termcmd[]    = { "st", NULL };
 static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
+static const char *notescmd[] = { "st", "-t", "notes", "e", "nvim", "$HOME/docs/notes/quicknotes.md", NULL };
 
 // static const char *surfcmd[] = { "surf", "https://startpage.com", NULL };
 
@@ -76,7 +77,7 @@ static const char *surfcmd[] = {
 };
 
 // static const char *fzfcmd[]      = { "st", "-c", "fzf-pop", "-g", "1886x1046+17+17", "-e", "fzfsearch", NULL };
-static const char *fzfcmd[]      = { "/home/swaminsane/.local/bin/fzfsearch", NULL };
+static const char *fzfcmd[]      = { "$HOME/.local/bin/fzfsearch", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -114,7 +115,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
         { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
         { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
-        { MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("/usr/local/bin/slock") },
+        { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
 
 
 // My additions
@@ -124,12 +125,13 @@ static const Key keys[] = {
         { 0,                             XK_F4,     spawn,          {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}} },
 //        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
 //        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
-        { MODKEY,                        XK_F10,    spawn,          SHCMD("/home/swaminsane/.local/bin/connectmenu") },
 //        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
 
+        { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
+        { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
 
         // Screenshot
-        { 0,     XK_Print,  spawn, SHCMD("scrot ~/Pictures/Screenshots/%Y-%m-%d.png") },
+        { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/%Y-%m-%d.png") },
 
 // Volume
         { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
