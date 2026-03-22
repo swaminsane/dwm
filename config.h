@@ -127,11 +127,11 @@ static const Key keys[] = {
 
 
         // Screenshot
-        { MODKEY,     XK_p,  spawn, SHCMD("scrot ~/screenshots/%Y-%m-%d.png") },
+        { 0,     XK_Print,  spawn, SHCMD("scrot ~/Pictures/Screenshots/%Y-%m-%d.png") },
 
 // Volume
-        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer -i 5") },
-        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer -d 5") },
+        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%-") },
+        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%+") },
 
 // Brightness
         { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
