@@ -59,12 +59,14 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#define STATUSBAR "dwmblocks"
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 // static const char *termcmd[]    = { "st", NULL };
 static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
-static const char *notescmd[] = { "st", "-t", "notes", "e", "nvim", "$HOME/docs/notes/quicknotes.md", NULL };
+static const char *notescmd[] = { "st", "-t", "notes", "e", "nvim", "$HOME/sync/docs/notes/quicknotes.md", NULL };
 
 // static const char *surfcmd[] = { "surf", "https://startpage.com", NULL };
 
@@ -72,7 +74,8 @@ static const char *surfcmd[] = {
     "sh", "-c",
     "wid=$(tabbed -d); "
     "surf -e $wid https://startpage.com & "
-    "surf -e $wid https://invidious.nerdvpn.de &",
+    "surf -e $wid http://localhost:8384 & ",
+//    "surf -e $wid https://invidious.nerdvpn.de &",
     NULL
 };
 
