@@ -132,7 +132,7 @@ static const Key keys[] = {
 
         { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
         { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
-        { MODKEY, XK_t, spawn, SHCMD("zathura \"$(find ~/docs/ncert -name '*.pdf' | dmenu -l 20 -p 'Textbook:')\"") },
+        { MODKEY, XK_t, spawn, SHCMD("zathura \"$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -l 20 -p 'Textbook:')\"") },
 
         // Screenshot
         { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/%Y-%m-%d.png") },
