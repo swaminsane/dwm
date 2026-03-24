@@ -132,8 +132,7 @@ static const Key keys[] = {
 
         { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
         { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
-        { MODKEY, XK_t, spawn, SHCMD("zathura \"$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -l 20 -p 'Textbook:')\"") },
-
+        { MODKEY, XK_t, spawn, SHCMD("dir=$(echo -e 'NCERT\\nBooks' | dmenu -p 'Library:') && case $dir in NCERT) zathura \"$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -l 20 -p 'Open book:')\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -l 20 -p 'Open book:') && case \"${file##*.}\" in epub) foliate \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
         // Screenshot
         { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/%Y-%m-%d.png") },
 
