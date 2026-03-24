@@ -119,7 +119,7 @@ static const Key keys[] = {
         { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
         { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
         { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
-
+{ Mod1Mask, XK_t, spawn, SHCMD("st -e /home/swaminsane/.local/bin/hub") },
 
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
@@ -135,7 +135,7 @@ static const Key keys[] = {
 { MODKEY, XK_t, spawn, SHCMD("dir=$(printf 'NCERT\\nBooks' | dmenu -i -p 'Library:') && [ -z \"$dir\" ] && exit; case $dir in NCERT) book=$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -i -l 20 -p 'Open book:') && [ -n \"$book\" ] && zathura \"$book\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -i -l 20 -p 'Open book:') && [ -n \"$file\" ] && case \"${file##*.}\" in epub) mupdf \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
         // Screenshot
         { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png") },
-
+	{ Mod1Mask, XK_t, spawn, SHCMD("/home/swaminsane/.local/bin/hub") },
 // Volume
         { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
         { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
