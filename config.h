@@ -116,11 +116,11 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-        { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
-        { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
-        { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
-{ Mod1Mask, XK_t, spawn, SHCMD("st -e /home/swaminsane/.local/bin/hub") },
-
+    { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
+    { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
+    { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
+    { MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub") },
+    { Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/mpdmenu") },
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
 //        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
@@ -130,22 +130,21 @@ static const Key keys[] = {
 //        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
 //        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
 
-        { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
-        { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
-{ MODKEY, XK_t, spawn, SHCMD("dir=$(printf 'NCERT\\nBooks' | dmenu -i -p 'Library:') && [ -z \"$dir\" ] && exit; case $dir in NCERT) book=$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -i -l 20 -p 'Open book:') && [ -n \"$book\" ] && zathura \"$book\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -i -l 20 -p 'Open book:') && [ -n \"$file\" ] && case \"${file##*.}\" in epub) mupdf \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
+    { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
+    { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
+    { Mod1Mask, XK_t, spawn, SHCMD("dir=$(printf 'NCERT\\nBooks' | dmenu -i -p 'Library:') && [ -z \"$dir\" ] && exit; case $dir in NCERT) book=$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -i -l 20 -p 'Open book:') && [ -n \"$book\" ] && zathura \"$book\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -i -l 20 -p 'Open book:') && [ -n \"$file\" ] && case \"${file##*.}\" in epub) mupdf \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
         // Screenshot
-        { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png") },
-	{ Mod1Mask, XK_t, spawn, SHCMD("/home/swaminsane/.local/bin/hub") },
+    { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png") },
 // Volume
-        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
-        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
 
 // Brightness
-        { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
-        { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
+    { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
+    { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
 
 // Browser
-        { MODKEY, XK_f, spawn, SHCMD("firefox") },
+    { MODKEY, XK_f, spawn, SHCMD("firefox") },
 
 };
 
