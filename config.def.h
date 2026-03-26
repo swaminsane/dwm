@@ -26,7 +26,6 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-    
 //        { "St",       NULL,       NULL,       0,            0,           -1 },
         { "St",       NULL,       "notes",       1 << 2,            0,           -1 },
         { NULL,       NULL,       NULL,       0,            0,           -1 },
@@ -66,7 +65,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 // static const char *termcmd[]    = { "st", NULL };
 static const char *tabtermcmd[]  = { "tabbed", "-r 2", "st", "-w", "''", NULL };
-static const char *notescmd[] = { "st", "-t", "notes", "e", "nvim", "$HOME/docs/notes/quicknotes.md", NULL };
+static const char *notescmd[] = { "st", "-t", "notes", "e", "nvim", "$HOME/sync/docs/notes/quicknotes.md", NULL };
 
 // static const char *surfcmd[] = { "surf", "https://startpage.com", NULL };
 
@@ -74,7 +73,8 @@ static const char *surfcmd[] = {
     "sh", "-c",
     "wid=$(tabbed -d); "
     "surf -e $wid https://startpage.com & "
-    "surf -e $wid https://invidious.nerdvpn.de &",
+    "surf -e $wid http://localhost:8384 & ",
+//    "surf -e $wid https://invidious.nerdvpn.de &",
     NULL
 };
 
@@ -86,7 +86,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_z,      spawn,          {.v = dmenucmd } },
 //	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = tabtermcmd } },
-    { MODKEY|ShiftMask,                       XK_f,      spawn,          {.v = surfcmd } },
+        { MODKEY|ShiftMask,             XK_f,      spawn,          {.v = surfcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -115,37 +115,32 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-        { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
         { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
         { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
-
+        { MODKEY,	                XK_t,	   spawn, 	   SHCMD("st -e $HOME/.local/bin/hub") },
+        { MODKEY,		        XK_f,	   spawn,	   SHCMD("firefox") },
 
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
-//        { 0,                             XK_F2,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%-", NULL}} },
-//        { 0,                             XK_F3,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "5%+", NULL}} },
         { 0,                             XK_F4,     spawn,          {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}} },
-//        { 0,                             XK_F5,     spawn,          {.v = (const char *[]){"xbacklight", "-5", NULL}} },
-//        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
-//        { 0,                             XK_F6,     spawn,          {.v = (const char *[]){"xbacklight", "+5", NULL}} },
+    { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
+    { Mod1Mask, XK_t, spawn, SHCMD("dir=$(printf 'NCERT\\nBooks' | dmenu -i -p 'Library:') && [ -z \"$dir\" ] && exit; case $dir in NCERT) book=$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -i -l 20 -p 'Open book:') && [ -n \"$book\" ] && zathura \"$book\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -i -l 20 -p 'Open book:') && [ -n \"$file\" ] && case \"${file##*.}\" in epub) mupdf \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
+    { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png") },
+// Function
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master toggle") },
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
+    { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
+    { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
+    { MODKEY, XK_f, spawn, SHCMD("firefox") },
 
-        { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
-        { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
-        { MODKEY, XK_t, spawn, SHCMD("zathura \"$(find ~/docs/ncert -name '*.pdf' | dmenu -l 20 -p 'Textbook:')\"") },
 
-        // Screenshot
-        { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/%Y-%m-%d.png") },
-
-// Volume
-        { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+") },
-        { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-") },
-
-// Brightness
-        { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
-        { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
-
-// Browser
-        { MODKEY, XK_f, spawn, SHCMD("firefox") },
+// D menooo
+        { Mod1Mask,                     XK_y,      spawn,          SHCMD("$HOME/.local/bin/menu/ytdmenu") },
+        { Mod1Mask,                     XK_m,      spawn,          SHCMD("$HOME/.local/bin/menu/mpdmenu") },
+        { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/menu/connectmenu") },
+        { MODKEY,                       XK_Escape, spawn,          SHCMD("$HOME/.local/bin/menu/powermenu") },
+        { Mod1Mask,                     XK_y,      spawn,          SHCMD("$HOME/.local/bin/menu/ytdmenu") },
 
 };
 

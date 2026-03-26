@@ -26,7 +26,6 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-    
 //        { "St",       NULL,       NULL,       0,            0,           -1 },
         { "St",       NULL,       "notes",       1 << 2,            0,           -1 },
         { NULL,       NULL,       NULL,       0,            0,           -1 },
@@ -116,18 +115,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_5,                      4)
 	TAGKEYS(                        XK_6,                      5)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-        { MODKEY,                       XK_Escape, spawn,          SHCMD("/usr/local/bin/powermenu") },
         { MODKEY,                       XK_f,      spawn,          {.v = fzfcmd } },
         { MODKEY|ShiftMask,             XK_l,      spawn,          {.v = notescmd } },
         { MODKEY,	                XK_t,	   spawn, 	   SHCMD("st -e $HOME/.local/bin/hub") },
-        { Mod1Mask,		        XK_m,	   spawn,	   SHCMD("$HOME/.local/bin/mpdmenu") },
-        { Mod1Mask,                     XK_y,      spawn,          SHCMD("$HOME/.local/bin/ytdmenu") },
         { MODKEY,		        XK_f,	   spawn,	   SHCMD("firefox") },
 
 // My additions
         { 0,                             XK_F1,     spawn,          {.v = (const char *[]){"amixer", "set", "Master", "toggle", NULL}} },
         { 0,                             XK_F4,     spawn,          {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}} },
-    { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/connectmenu") },
     { MODKEY,                        XK_n,    spawn,          SHCMD("st -t notes -e $HOME/.local/src/nvim-linux-x86_64/bin/nvim $HOME/docs/notes/quicknotes.md") },
     { Mod1Mask, XK_t, spawn, SHCMD("dir=$(printf 'NCERT\\nBooks' | dmenu -i -p 'Library:') && [ -z \"$dir\" ] && exit; case $dir in NCERT) book=$(find ~/sync/docs/ncert -name '*.pdf' | dmenu -i -l 20 -p 'Open book:') && [ -n \"$book\" ] && zathura \"$book\" ;; Books) file=$(find ~/books -type f \\( -name '*.pdf' -o -name '*.epub' -o -name '*.cbz' -o -name '*.djvu' -o -name '*.mobi' \\) | dmenu -i -l 20 -p 'Open book:') && [ -n \"$file\" ] && case \"${file##*.}\" in epub) mupdf \"$file\" ;; *) zathura \"$file\" ;; esac ;; esac") },
     { 0,     XK_Print,  spawn, SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png") },
@@ -138,6 +133,14 @@ static const Key keys[] = {
     { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +5%") },
     { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-") },
     { MODKEY, XK_f, spawn, SHCMD("firefox") },
+
+
+// D menooo
+        { Mod1Mask,                     XK_y,      spawn,          SHCMD("$HOME/.local/bin/menu/ytdmenu") },
+        { Mod1Mask,                     XK_m,      spawn,          SHCMD("$HOME/.local/bin/menu/mpdmenu") },
+        { MODKEY,                        XK_F10,    spawn,          SHCMD("$HOME/.local/bin/menu/connectmenu") },
+        { MODKEY,                       XK_Escape, spawn,          SHCMD("$HOME/.local/bin/menu/powermenu") },
+        { Mod1Mask,                     XK_y,      spawn,          SHCMD("$HOME/.local/bin/menu/ytdmenu") },
 
 };
 
