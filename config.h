@@ -29,7 +29,7 @@ static const Rule rules[] = {
     //        { "St",       NULL,       NULL,       0,            0, -1 },
     {"St", NULL, "notes", 1 << 2, 0, -1},
     {NULL, NULL, NULL, 0, 0, -1},
-    {"firefox", NULL, NULL, 1 << 1, 0, -1},
+    {"firefox", NULL, NULL, 0, 0, -1},
     //        { "fzf-pop",  NULL,       NULL,       0,            1, -1 },
 };
 
@@ -94,9 +94,9 @@ static const char *fzfcmd[] = {"$HOME/.local/bin/fzfsearch", NULL};
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
-    {MODKEY, XK_z, spawn, {.v = dmenucmd}},
-    //	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd
-    //} },
+    //    {MODKEY, XK_p, spawn, {.v = dmenucmd}},
+    //	{ MODKEY,                       XK_Return, spawn,          {.v =
+    // termcmd} },
     {MODKEY, XK_Return, spawn, {.v = tabtermcmd}},
     {MODKEY, XK_f, spawn, SHCMD("$HOME/.local/bin/startpager")},
     {MODKEY | ShiftMask, XK_f, spawn, SHCMD("firefox")},
@@ -112,7 +112,7 @@ static const Key keys[] = {
     {MODKEY, XK_c, killclient, {0}},
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
     //	{ MODKEY,                       XK_f,      spawn,          {.v =
-    //librewolf } },
+    // librewolf } },
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
@@ -144,16 +144,17 @@ static const Key keys[] = {
     //    { 0, XF86XK_AudioMicMute, spawn, SHCMD("amixer set Capture toggle") },
     {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set +5%")},
     {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-")},
-    //    { MODKEY, XK_f, spawn, SHCMD("firefox") },
 
     // D menooo
+    {Mod1Mask, XK_space, spawn, {.v = dmenucmd}},
     {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
     {Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/menu/mpdmenu")},
     {MODKEY, XK_F10, spawn, SHCMD("$HOME/.local/bin/menu/connectmenu")},
     {MODKEY, XK_Escape, spawn, SHCMD("$HOME/.local/bin/menu/powermenu")},
     {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
+    {Mod1Mask, XK_r, spawn, SHCMD("$HOME/.local/bin/menu/rssmenu")},
+    {Mod1Mask, XK_f, spawn, SHCMD("st -e lf")},
     {Mod1Mask, XK_t, spawn, SHCMD("$HOME/.local/bin/menu/textsmenu")},
-
 };
 
 /* button definitions */
