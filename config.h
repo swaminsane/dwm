@@ -36,6 +36,41 @@ static const Rule rules[] = {
     //        { "fzf-pop",  NULL,       NULL,       0,            1, -1 },
 };
 
+// helper macros
+#define TAGMASK ((1 << LENGTH(tags)) - 1)
+
+void viewadjacent(const Arg *arg) {
+  int seltag = 0;
+  for (int i = 0; i < LENGTH(tags); i++) {
+    if (selmon->tagset[selmon->seltags] & (1 << i)) {
+      seltag = i;
+      break;
+    }
+  }
+
+  int nexttag = (seltag + arg->i + LENGTH(tags)) % LENGTH(tags);
+  Arg a = {.ui = 1 << nexttag};
+  view(&a);
+}
+
+void tagadjacent(const Arg *arg) {
+  if (!selmon->sel)
+    return;
+
+  int seltag = 0;
+  for (int i = 0; i < LENGTH(tags); i++) {
+    if (selmon->sel->tags & (1 << i)) {
+      seltag = i;
+      break;
+    }
+  }
+
+  int nexttag = (seltag + arg->i + LENGTH(tags)) % LENGTH(tags);
+  Arg a = {.ui = 1 << nexttag};
+  tag(&a);
+  view(&a);
+}
+
 /* layout(s) */
 static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster = 1;    /* number of clients in master area */
@@ -104,12 +139,12 @@ static const Key keys[] = {
     {MODKEY, XK_f, spawn, SHCMD("$HOME/.local/bin/startpager")},
     {MODKEY | ShiftMask, XK_f, spawn, SHCMD("librewolf")},
     {MODKEY, XK_b, togglebar, {0}},
-    {MODKEY, XK_j, focusstack, {.i = +1}},
-    {MODKEY, XK_k, focusstack, {.i = -1}},
+    {MODKEY, XK_Down, focusstack, {.i = +1}},
+    {MODKEY, XK_Up, focusstack, {.i = -1}},
     {MODKEY, XK_i, incnmaster, {.i = +1}},
     {MODKEY, XK_d, incnmaster, {.i = -1}},
-    {MODKEY, XK_h, setmfact, {.f = -0.05}},
-    {MODKEY, XK_l, setmfact, {.f = +0.05}},
+    {MODKEY, XK_Right, setmfact, {.f = -0.05}},
+    {MODKEY, XK_Left, setmfact, {.f = +0.05}},
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY, XK_c, killclient, {0}},
@@ -158,6 +193,13 @@ static const Key keys[] = {
     {Mod1Mask, XK_r, spawn, SHCMD("$HOME/.local/bin/menu/rssmenu")},
     {Mod1Mask, XK_f, spawn, SHCMD("st -e lf")},
     {Mod1Mask, XK_t, spawn, SHCMD("$HOME/.local/bin/menu/textsmenu")},
+    // View next/prev tag
+    {MODKEY, XK_h, viewadjacent, {.i = -1}},
+    {MODKEY, XK_l, viewadjacent, {.i = +1}},
+
+    // Move window to next/prev tag
+    {MODKEY, XK_j, tagadjacent, {.i = -1}},
+    {MODKEY, XK_k, tagadjacent, {.i = +1}},
 };
 
 /* button definitions */
