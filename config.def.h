@@ -1,9 +1,10 @@
 /* See LICENSE file for copyright and license details. */
 
+#include "/home/swaminsane/.config/theme/colors.h"
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const unsigned int borderpx = 0; /* border pixel of windows */
+static const unsigned int borderpx = 5; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
 static const int swallowfloating =
     0;                        /* 1 means swallow floating windows by default */
@@ -12,10 +13,12 @@ static const int topbar = 1;  /* 0 means bottom bar */
 static const char *fonts[] = {
     "Noto Sans Mono:size=11:antialias=true:autohint=true",
     "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
-static const char dmenufont[] = "monospace:size=12";
+static const char dmenufont[] = "Terminus:style=Bold:size=15";
 
-#include "/home/swaminsane/.cache/wal/colors-wal-dwm.h"
-
+static const char *colors[][3] = {
+    [SchemeNorm] = {COL_FG, COL_BG, COL_BORDER},
+    [SchemeSel] = {COL_BG, COL_ACCENT, COL_ACCENT},
+};
 /* tagging */
 static const char *tags[] = {"α", "β", "γ", "δ", "ε", "ζ"};
 
