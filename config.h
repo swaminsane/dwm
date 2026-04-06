@@ -1,19 +1,18 @@
 /* See LICENSE file for copyright and license details. */
 
 #include "/home/swaminsane/.config/theme/colors.h"
+#include "/home/swaminsane/.config/theme/fonts.h"
 #include <X11/XF86keysym.h>
-
 /* appearance */
-static const unsigned int borderpx = 5; /* border pixel of windows */
-static const unsigned int snap = 20;    /* snap pixel */
+static const unsigned int borderpx = BORDER_PX; /* border pixel of windows */
+static const unsigned int snap = 20;            /* snap pixel */
 static const int swallowfloating =
     0;                        /* 1 means swallow floating windows by default */
 static const int showbar = 1; /* 0 means no bar */
 static const int topbar = 1;  /* 0 means bottom bar */
 static const char *fonts[] = {
-    "Noto Sans Mono:size=11:antialias=true:autohint=true",
-    "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
-static const char dmenufont[] = "Terminus:style=Bold:size=15";
+    FONT_MAIN, "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
+static const char dmenufont[] = FONT_MAIN;
 
 static const char *colors[][3] = {
     [SchemeNorm] = {COL_FG, COL_BG, COL_BORDER},
@@ -140,6 +139,7 @@ static const Key keys[] = {
      SHCMD("$HOME/.local/bin/st-samedir")},
     {MODKEY, XK_f, spawn, SHCMD("$HOME/.local/bin/startpager")},
     {MODKEY | ShiftMask, XK_f, spawn, SHCMD("firefox")},
+    {MODKEY, XK_Home, spawn, SHCMD("pcmanfm")},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_Down, focusstack, {.i = +1}},
     {MODKEY, XK_Up, focusstack, {.i = -1}},
@@ -166,7 +166,8 @@ static const Key keys[] = {
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5){MODKEY | ShiftMask, XK_q, quit, {0}},
     {MODKEY, XK_f, spawn, {.v = fzfcmd}},
     {MODKEY | ShiftMask, XK_l, spawn, {.v = notescmd}},
-    {MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub")},
+    //    {MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub")},
+    {MODKEY, XK_e, spawn, SHCMD("emacsclient -c")},
 
     // My additions
     {0,
@@ -188,7 +189,7 @@ static const Key keys[] = {
     {Mod1Mask, XK_space, spawn, {.v = dmenucmd}},
     {Mod1Mask, XK_b, spawn, SHCMD("$HOME/.local/bin/menu/surfmenu")},
     {Mod1Mask, XK_f, spawn, SHCMD("st -e lf")},
-    {Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/menu/mpdmenu")},
+    {Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/menu/music/musicmenu")},
     {Mod1Mask, XK_p, spawn, SHCMD("$HOME/.local/bin/menu/pomodmenu")},
     {0, XK_Print, spawn, SHCMD("$HOME/.local/bin/menu/scrshotmenu")},
     {Mod1Mask, XK_Escape, spawn, SHCMD("$HOME/.local/bin/menu/powermenu")},

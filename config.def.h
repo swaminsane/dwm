@@ -1,19 +1,18 @@
 /* See LICENSE file for copyright and license details. */
 
 #include "/home/swaminsane/.config/theme/colors.h"
+#include "/home/swaminsane/.config/theme/fonts.h"
 #include <X11/XF86keysym.h>
-
 /* appearance */
-static const unsigned int borderpx = 5; /* border pixel of windows */
-static const unsigned int snap = 32;    /* snap pixel */
+static const unsigned int borderpx = BORDER_PX; /* border pixel of windows */
+static const unsigned int snap = 20;            /* snap pixel */
 static const int swallowfloating =
     0;                        /* 1 means swallow floating windows by default */
 static const int showbar = 1; /* 0 means no bar */
 static const int topbar = 1;  /* 0 means bottom bar */
 static const char *fonts[] = {
-    "Noto Sans Mono:size=11:antialias=true:autohint=true",
-    "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
-static const char dmenufont[] = "Terminus:style=Bold:size=15";
+    FONT_MAIN, "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
+static const char dmenufont[] = FONT_MAIN;
 
 static const char *colors[][3] = {
     [SchemeNorm] = {COL_FG, COL_BG, COL_BORDER},
@@ -35,6 +34,41 @@ static const Rule rules[] = {
     {"firefox", NULL, NULL, 0, 0, -1},
     //        { "fzf-pop",  NULL,       NULL,       0,            1, -1 },
 };
+
+// helper macros
+#define TAGMASK ((1 << LENGTH(tags)) - 1)
+
+void viewadjacent(const Arg *arg) {
+  int seltag = 0;
+  for (int i = 0; i < LENGTH(tags); i++) {
+    if (selmon->tagset[selmon->seltags] & (1 << i)) {
+      seltag = i;
+      break;
+    }
+  }
+
+  int nexttag = (seltag + arg->i + LENGTH(tags)) % LENGTH(tags);
+  Arg a = {.ui = 1 << nexttag};
+  view(&a);
+}
+
+void tagadjacent(const Arg *arg) {
+  if (!selmon->sel)
+    return;
+
+  int seltag = 0;
+  for (int i = 0; i < LENGTH(tags); i++) {
+    if (selmon->sel->tags & (1 << i)) {
+      seltag = i;
+      break;
+    }
+  }
+
+  int nexttag = (seltag + arg->i + LENGTH(tags)) % LENGTH(tags);
+  Arg a = {.ui = 1 << nexttag};
+  tag(&a);
+  view(&a);
+}
 
 /* layout(s) */
 static const float mfact = 0.55; /* factor of master area size [0.05..0.95] */
@@ -101,15 +135,18 @@ static const Key keys[] = {
     //	{ MODKEY,                       XK_Return, spawn,          {.v =
     // termcmd} },
     {MODKEY, XK_Return, spawn, {.v = tabtermcmd}},
+    {MODKEY | ShiftMask, XK_Return, spawn,
+     SHCMD("$HOME/.local/bin/st-samedir")},
     {MODKEY, XK_f, spawn, SHCMD("$HOME/.local/bin/startpager")},
     {MODKEY | ShiftMask, XK_f, spawn, SHCMD("firefox")},
+    {MODKEY, XK_Home, spawn, SHCMD("pcmanfm")},
     {MODKEY, XK_b, togglebar, {0}},
-    {MODKEY, XK_j, focusstack, {.i = +1}},
-    {MODKEY, XK_k, focusstack, {.i = -1}},
+    {MODKEY, XK_Down, focusstack, {.i = +1}},
+    {MODKEY, XK_Up, focusstack, {.i = -1}},
     {MODKEY, XK_i, incnmaster, {.i = +1}},
     {MODKEY, XK_d, incnmaster, {.i = -1}},
-    {MODKEY, XK_h, setmfact, {.f = -0.05}},
-    {MODKEY, XK_l, setmfact, {.f = +0.05}},
+    {MODKEY, XK_Left, setmfact, {.f = -0.05}},
+    {MODKEY, XK_Right, setmfact, {.f = +0.05}},
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY, XK_c, killclient, {0}},
@@ -129,7 +166,8 @@ static const Key keys[] = {
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5){MODKEY | ShiftMask, XK_q, quit, {0}},
     {MODKEY, XK_f, spawn, {.v = fzfcmd}},
     {MODKEY | ShiftMask, XK_l, spawn, {.v = notescmd}},
-    {MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub")},
+    //    {MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub")},
+    {MODKEY, XK_e, spawn, SHCMD("emacsclient -c")},
 
     // My additions
     {0,
@@ -138,26 +176,43 @@ static const Key keys[] = {
      {.v = (const char *[]){"amixer", "set", "Capture", "toggle", NULL}}},
     {MODKEY, XK_n, spawn,
      SHCMD("st -t notes -e nvim $HOME/sync/docs/notes/quicknotes.md")},
-    {0, XK_Print, spawn,
-     SHCMD("scrot $HOME/Pictures/Screenshots/derb/%Y-%m-%d.png")},
     // Function
     {0, XF86XK_AudioMute, spawn, SHCMD("amixer set Master toggle")},
-    {0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+")},
-    {0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-")},
+    {0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 1%+")},
+    {0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 1%-")},
     //    { 0, XF86XK_AudioMicMute, spawn, SHCMD("amixer set Capture toggle") },
-    {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set +5%")},
-    {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 5%-")},
-
+    {0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set +1%")},
+    {0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 1%-")},
     // D menooo
+    {Mod1Mask, XK_F12, spawn,
+     SHCMD("$HOME/.local/bin/display-init && $HOME/.local/bin/toggle-display")},
     {Mod1Mask, XK_space, spawn, {.v = dmenucmd}},
-    {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
-    {Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/menu/mpdmenu")},
-    {MODKEY, XK_F10, spawn, SHCMD("$HOME/.local/bin/menu/connectmenu")},
-    {MODKEY, XK_Escape, spawn, SHCMD("$HOME/.local/bin/menu/powermenu")},
-    {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
-    {Mod1Mask, XK_r, spawn, SHCMD("$HOME/.local/bin/menu/rssmenu")},
+    {Mod1Mask, XK_b, spawn, SHCMD("$HOME/.local/bin/menu/surfmenu")},
     {Mod1Mask, XK_f, spawn, SHCMD("st -e lf")},
-    {Mod1Mask, XK_t, spawn, SHCMD("$HOME/.local/bin/menu/textsmenu")},
+    {Mod1Mask, XK_m, spawn, SHCMD("$HOME/.local/bin/menu/music/musicmenu")},
+    {Mod1Mask, XK_p, spawn, SHCMD("$HOME/.local/bin/menu/pomodmenu")},
+    {0, XK_Print, spawn, SHCMD("$HOME/.local/bin/menu/scrshotmenu")},
+    {Mod1Mask, XK_Escape, spawn, SHCMD("$HOME/.local/bin/menu/powermenu")},
+    {Mod1Mask, XK_F10, spawn, SHCMD("$HOME/.local/bin/menu/connectmenu")},
+    {Mod1Mask, XK_Super_L, spawn, SHCMD("$HOME/.local/bin/menu/allmenu")},
+    /*
+        {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
+        {Mod1Mask, XK_v, spawn, SHCMD("$HOME/.local/bin/menu/clipmenu")},
+        {Mod1Mask, XK_y, spawn, SHCMD("$HOME/.local/bin/menu/ytdmenu")},
+        {Mod1Mask, XK_r, spawn, SHCMD("$HOME/.local/bin/menu/rssmenu")},
+        {Mod1Mask, XK_t, spawn, SHCMD("$HOME/.local/bin/menu/textsmenu")},
+        {Mod1Mask, XK_Insert, spawn, SHCMD("$HOME/.local/bin/menu/passmenu")},
+        {Mod1Mask | ShiftMask, XK_t, spawn,
+       SHCMD("$HOME/.local/bin/menu/themenu")}, {Mod1Mask, XK_F7, spawn,
+       SHCMD("$HOME/.local/bin/menu/tvmenu")},
+    */
+    // View next/prev tag
+    {MODKEY, XK_h, viewadjacent, {.i = -1}},
+    {MODKEY, XK_l, viewadjacent, {.i = +1}},
+
+    // Move window to next/prev tag
+    {MODKEY, XK_j, tagadjacent, {.i = -1}},
+    {MODKEY, XK_k, tagadjacent, {.i = +1}},
 };
 
 /* button definitions */
