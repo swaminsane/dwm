@@ -9,7 +9,7 @@ static const unsigned int snap = 20;            /* snap pixel */
 static const int swallowfloating =
     0;                        /* 1 means swallow floating windows by default */
 static const int showbar = 1; /* 0 means no bar */
-static const int topbar = 1;  /* 0 means bottom bar */
+static const int topbar = 0;  /* 0 means bottom bar */
 static const char *fonts[] = {
     FONT_MAIN, "Noto Color Emoji:pixelsize=11:antialias=true:autohint=true"};
 static const char dmenufont[] = FONT_MAIN;
@@ -231,4 +231,6 @@ static const Button buttons[] = {
     {ClkTagBar, 0, Button3, toggleview, {0}},
     {ClkTagBar, MODKEY, Button1, tag, {0}},
     {ClkTagBar, MODKEY, Button3, toggletag, {0}},
+    {ClkTagBar, 0, 6, viewadjacent, {.i = -1}},
+    {ClkTagBar, 0, 7, viewadjacent, {.i = +1}},
 };
