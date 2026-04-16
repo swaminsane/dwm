@@ -167,7 +167,7 @@ static const Key keys[] = {
     {MODKEY, XK_f, spawn, {.v = fzfcmd}},
     {MODKEY | ShiftMask, XK_l, spawn, {.v = notescmd}},
     //    {MODKEY, XK_t, spawn, SHCMD("st -e $HOME/.local/bin/hub")},
-    {MODKEY, XK_e, spawn, SHCMD("emacsclient -c")},
+    {MODKEY, XK_e, spawn, SHCMD("st -e nvim")},
 
     // My additions
     {0,
